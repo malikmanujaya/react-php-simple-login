@@ -12,28 +12,13 @@ export const UserContextProvider = ({children}) => {
     const [theUser, setUser] = useState(null);
     const [wait, setWait] = useState(false);
 
-    const registerUser = async ({name,email,password}) => {
-        setWait(true);
-        try{
-            const {data} = await Axios.post('register.php',{
-                name,
-                email,
-                password 
-            });
-            setWait(false);
-            return data;
-        }
-        catch(err){
-            setWait(false);
-            return {success:0, message:'Server Error!'};
-        }
-    }
+    
 
-    const loginUser = async ({email,password}) => {
+    const loginUser = async ({username,password}) => {
         setWait(true);
         try{
             const {data} = await Axios.post('login.php',{
-                email,
+                username,
                 password 
             });
             if(data.success && data.token){
@@ -77,7 +62,7 @@ export const UserContextProvider = ({children}) => {
     }
 
     return (
-        <UserContext.Provider value={{registerUser,loginUser,wait, user:theUser,loggedInCheck,logout}}>
+        <UserContext.Provider value={{loginUser,wait, user:theUser,loggedInCheck,logout}}>
             {children}
         </UserContext.Provider>
     );
